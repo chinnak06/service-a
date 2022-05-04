@@ -12,10 +12,7 @@
 	<artifactId>service-a</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>app1</name>
-	<description>Service 1</description>
-	<properties>
-		<java.version>11</java.version>
-	</properties>
+	<description>Service a</description>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
