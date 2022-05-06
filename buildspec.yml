@@ -30,7 +30,7 @@ phases:
     commands:
       - aws eks update-kubeconfig --name $CLUSTER_NAME --region $REGION
       - git clone $MANIFEST_REPO_URL
-      - helm upgrade --install $APPNAME --set AppName=$APPNAME  ./$APPNAM
+      - helm upgrade --install $APPNAME --set AppName=$APPNAME --set Image.URI=$CONTAINER_REPO_URL --set Image.RepoName=$CONTAINER_REPO_NAME ./$APPNAM
       
 artifacts:
   files:
