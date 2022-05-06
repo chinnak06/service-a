@@ -7,6 +7,9 @@ phases:
       - curl -sS -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/kubectl
       - chmod +x ./kubectl ./aws-iam-authenticator
       - export PATH=$PWD/:$PATH
+      - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
+      - chmod 700 get_helm.sh
+      - ./get_helm.sh
       - apt-get update && apt-get -y install jq python3-pip python3-dev && pip3 install --upgrade awscli
       
   pre_build:
@@ -28,8 +31,8 @@ phases:
   post_build:
     commands:
       - aws eks update-kubeconfig --name $CLUSTER_NAME --region $REGION
-      - kubectl apply -f service.yml
-      - kubectl apply -f deployment.yml
+      - git clone $MANIFEST_REPO_URL
+      - helm upgrade --install $APPNAME --set AppName=$APPNAME  ./$APPNAM
       
 artifacts:
   files:
