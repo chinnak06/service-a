@@ -20,6 +20,7 @@ phases:
        - "mkdir ~/.kube/"
        - "aws eks --region $REGION update-kubeconfig --name $CLUSTER_NAME
        - "chmod 0600 ~/.kube/config"
+       - "aws sts get-caller-identity"
        - git clone $MANIFEST_REPO_URL
       
   build:
