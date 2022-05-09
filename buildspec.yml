@@ -25,12 +25,15 @@ phases:
       
   build:
     commands:
-      - helm upgrade --install $APPNAME --set AppName=$APPNAME --set Image.URI=$CONTAINER_REPO_URL --set Image.RepoName=$CONTAINER_REPO_NAME ./$CHART_NAME
-      
+      - mvn clean install
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $CONTAINER_REPO_URL
+      - docker build -t $APPNAME .
+      - docker tag $APPNAME:$IMAGE_TAG $CONTAINER_REPO_URL/$APPNAME:$IMAGE_TAG
+      - docker push $CONTAINER_REPO_URL/$APPNAME:$IMAGE_TAG
     
   post_build:
     commands:
-      
+     - helm upgrade --install $APPNAME --set AppName=$APPNAME --set Image.URI=$CONTAINER_REPO_URL --set Image.RepoName=$CONTAINER_REPO_NAME ./$CHART_NAME      
       
 artifacts:
   files:
