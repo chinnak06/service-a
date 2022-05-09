@@ -29,7 +29,6 @@ phases:
   post_build:
     commands:
       - aws sts get-caller-identity
-      - kubectl config current-context
       - kubectl cluster-info
       - helm version
       - helm install service-a --set AppName=service-a --set Image.URI=293281137840.dkr.ecr.us-east-1.amazonaws.com --set Image.RepoName=service-a ./test-chart
