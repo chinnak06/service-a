@@ -3,8 +3,8 @@ version: 0.2
 phases:
   install:
     commands:
-      - curl -o aws-iam-authenticator https://s3.us-west-2.amazonaws.com/amazon-eks/1.21.2/2021-07-05/bin/linux/amd64/aws-iam-authenticator
-      - curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.21.2/2021-07-05/bin/linux/amd64/kubectl
+      - curl -sS -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator
+      - curl -sS -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/kubectl
       - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
       - unzip awscliv2.zip 
       - ./aws/install --update
@@ -20,16 +20,21 @@ phases:
        - echo $CONTAINER_REPO_URL
        - echo $CONTAINER_REPO_NAME
        - echo $IMAGE_TAG
-       - git clone $MANIFEST_REPO_URL
       
   build:
     commands:
-     
+      - mvn clean install
+      - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $CONTAINER_REPO_URL
+      - docker build -t $CONTAINER_REPO_NAME .
+      - docker tag $CONTAINER_REPO_NAME:$IMAGE_TAG $CONTAINER_REPO_URL/$CONTAINER_REPO_NAME:$IMAGE_TAG
+      - docker push $CONTAINER_REPO_URL/$CONTAINER_REPO_NAME:$IMAGE_TAG
     
   post_build:
     commands:
       - aws eks update-kubeconfig --name $CLUSTER_NAME --region $REGION
-      - helm install service-a --set AppName=service-a --set Image.URI=293281137840.dkr.ecr.us-east-1.amazonaws.com --set Image.RepoName=service-a ./test-chart --debug --namespace service-a 
+      - git clone $MANIFEST_REPO_URL
+      - helm upgrade --install $APPNAME --set AppName=$APPNAME --set Image.URI=$CONTAINER_REPO_URL --set Image.RepoName=$CONTAINER_REPO_NAME ./$APPNAM
       
 artifacts:
   files:
+
