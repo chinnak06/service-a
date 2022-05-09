@@ -29,7 +29,7 @@ phases:
   post_build:
     commands:
       - aws eks update-kubeconfig --name $CLUSTER_NAME --region $REGION
-      - helm install service-a --set AppName=service-a --set Image.URI=293281137840.dkr.ecr.us-east-1.amazonaws.com --set Image.RepoName=service-a ./test-chart --debug --namespace service-a
+      - helm install service-a --set AppName=service-a --set Image.URI=293281137840.dkr.ecr.us-east-1.amazonaws.com --set Image.RepoName=service-a ./test-chart --debug --namespace service-a --insecure-skip-tls-verify
       
 artifacts:
   files:
