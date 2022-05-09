@@ -28,7 +28,8 @@ phases:
     
   post_build:
     commands:
-      - aws eks update-kubeconfig --name $CLUSTER_NAME --region $REGION      
+      - aws eks update-kubeconfig --name $CLUSTER_NAME --region $REGION
+      - kubectl config current-context
       - helm upgrade --install $APPNAME --set AppName=$APPNAME --set Image.URI=$CONTAINER_REPO_URL --set Image.RepoName=$CONTAINER_REPO_NAME ./test-chart
       
 artifacts:
