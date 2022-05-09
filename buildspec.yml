@@ -25,7 +25,7 @@ phases:
       
   build:
     commands:
-      - helm upgrade --install $APPNAME --set AppName=$APPNAME --set Image.URI=$CONTAINER_REPO_URL --set Image.RepoName=$CONTAINER_REPO_NAME ./$APPNAME
+      - helm upgrade --install $APPNAME --set AppName=$APPNAME --set Image.URI=$CONTAINER_REPO_URL --set Image.RepoName=$CONTAINER_REPO_NAME ./$CHART_NAME
       
     
   post_build:
