@@ -5,15 +5,9 @@ phases:
     commands:
       - curl -sS -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator
       - curl -sS -o kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/kubectl
-      - curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-      - unzip awscliv2.zip 
-      - ./aws/install --update
       - chmod +x ./kubectl ./aws-iam-authenticator
       - export PATH=$PWD/:$PATH
-      - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
-      - chmod 700 get_helm.sh
-      - ./get_helm.sh
-      - apt-get update
+      - apt-get update && apt-get -y install jq python3-pip python3-dev && pip3 install --upgrade awscli
       
   pre_build:
     commands:
@@ -28,8 +22,7 @@ phases:
   post_build:
     commands:
       - aws eks update-kubeconfig --name $CLUSTER_NAME --region $REGION
-      - git clone $MANIFEST_REPO_URL
-      - helm upgrade --install $APPNAME --set AppName=$APPNAME --set Image.URI=$CONTAINER_REPO_URL --set Image.RepoName=$CONTAINER_REPO_NAME ./$APPNAM
+      - kubectl get namespaces
       
 artifacts:
   files:
