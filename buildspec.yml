@@ -31,7 +31,7 @@ phases:
       - aws eks update-kubeconfig --name $CLUSTER_NAME --region $REGION
       - ls
       - cat /var/lib/root/.kube/config
-      - - cat /root/.kube/config
+      - cat /root/.kube/config
       - export KUBECONFIG=~/.kube/config
       - helm install service-a --set AppName=service-a --set Image.URI=293281137840.dkr.ecr.us-east-1.amazonaws.com --set Image.RepoName=service-a ./test-chart --debug
       
