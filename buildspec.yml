@@ -18,7 +18,7 @@ phases:
     commands:
        - "helm version"
        - "mkdir ~/.kube/"
-       - "aws eks --region $REGION update-kubeconfig --name $CLUSTER_NAME
+       - "aws eks update-kubeconfig --name $CLUSTER_NAME --region $REGION"
        - "chmod 0600 ~/.kube/config"
        - "aws sts get-caller-identity"
        - git clone $MANIFEST_REPO_URL
