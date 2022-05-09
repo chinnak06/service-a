@@ -18,7 +18,7 @@ phases:
     commands:
        - "helm version"
        - "mkdir ~/.kube/"
-       - "aws eks --region $REGION update-kubeconfig --name $CLUSTER_NAME --role-arn $EKS_CODEBUILD_ROLE_ARN"
+       - "aws eks --region $REGION update-kubeconfig --name $CLUSTER_NAME
        - "chmod 0600 ~/.kube/config"
        - git clone $MANIFEST_REPO_URL
       
